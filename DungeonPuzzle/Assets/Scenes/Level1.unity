@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1289116937}
   - component: {fileID: 1289116938}
+  - component: {fileID: 1289116939}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -164,6 +165,18 @@ MonoBehaviour:
   - {fileID: 1826046082360932, guid: ca99ba6d4212bf54887495ff700eb09a, type: 2}
   - {fileID: 1334080558919140, guid: f8322c0b3cd184749b36d54ae209a420, type: 2}
   tilesParent: {fileID: 1289116936}
+--- !u!114 &1289116939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1289116936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ee491d4b48ca9c45a57f0613dc38745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTile: {fileID: 0}
 --- !u!1 &1313598099
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +317,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1482202459}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 10, y: 40, z: -10}
+  m_LocalPosition: {x: 5, y: 40, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

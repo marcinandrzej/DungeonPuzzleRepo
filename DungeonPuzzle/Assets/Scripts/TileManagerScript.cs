@@ -6,11 +6,10 @@ public class TileManagerScript : MonoBehaviour
 {
     private const int X_OFFSET = 10;
     private const int Y_OFFSET = -10;
-    private const float SPEED = 0.5f;
 
+    private GameObject[,] tiles;
     public static TileManagerScript instance;
     public GameObject[] tilePrefabs;
-    private GameObject[,] tiles;
     public GameObject tilesParent;
 
     void Awake()
@@ -46,9 +45,9 @@ public class TileManagerScript : MonoBehaviour
         }
         map[2, 0] = 3;
         map[2, 4] = 2;
-        map[1, 1] = 5;
+        map[1, 1] = 8;
         map[1, 2] = 4;
-        map[2, 2] = 5;
+        map[2, 2] = 9;
         map[3, 2] = 6;
         map[3, 3] = 7;
 
@@ -56,11 +55,12 @@ public class TileManagerScript : MonoBehaviour
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Update ()
+    {
 
-    public void SetUpTiles(Transform parent, int[,] tileMap)
+    }
+
+    private void SetUpTiles(Transform parent, int[,] tileMap)
     {
         tiles = new GameObject[tileMap.GetLength(0), tileMap.GetLength(1)];
         for (int x = 0; x < tiles.GetLength(0); x++)
@@ -80,5 +80,21 @@ public class TileManagerScript : MonoBehaviour
     {
         Vector3 calculatedPos = new Vector3((x - 1) * X_OFFSET, hight, (y - 1) * Y_OFFSET);
         return calculatedPos;
+    }
+
+    public bool CanBeMoved(int x, int y)
+    {
+        if(tiles[x,y] == null)
+            return true;
+        return false;
+    }
+
+    public void MoveTile(int x, int y, int deltax, int deltay, TileScript tile, float speed)
+    {
+        GameObject activeTile = tiles[x, y];
+        tiles[x, y] = null;
+        tiles[x + deltax, y + deltay] = activeTile;
+        StartCoroutine(tile.Move(CalculatePosition(tile.XIndex + deltax, tile.YIndex + deltay, activeTile.transform.position.y),
+                            speed, deltax, deltay));
     }
 }

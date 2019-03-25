@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviour
 {
-    private int xIndex;
-    private int yIndex;
+    public int xIndex;
+    public int yIndex;
 
     public bool passable;
 
@@ -45,15 +45,13 @@ public class TileScript : MonoBehaviour
     {
         XIndex = _xIndex;
         YIndex = _yIndex;
-        transform.position = pos;
+        transform.localPosition = pos;
     }
 
-    public IEnumerator Move(Vector3 destination, float speed)
-    {/*
-        float destinationX = (XIndex - 1) * X_OFFSET;
-        float destinationY = (YIndex - 1) * Y_OFFSET;
-        Vector3 destination = new Vector3(destinationX, transform.position.y, destinationY);
-        */
+    public IEnumerator Move(Vector3 destination, float speed, int _x, int _y)
+    {
+        XIndex += _x;
+        YIndex += _y;
         while (!transform.localPosition.Equals(destination))
         {
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, destination, speed);
