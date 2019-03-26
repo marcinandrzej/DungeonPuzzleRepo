@@ -7,6 +7,9 @@ public class TileManagerScript : MonoBehaviour
     private const int X_OFFSET = 10;
     private const int Y_OFFSET = -10;
 
+    private TileScript startTile;
+    private TileScript endTile;
+    private List<TileScript> path;
     private GameObject[,] tiles;
     public static TileManagerScript instance;
     public GameObject[] tilePrefabs;
@@ -52,6 +55,8 @@ public class TileManagerScript : MonoBehaviour
         map[3, 3] = 7;
 
         SetUpTiles(tilesParent.transform, map);
+        startTile = GameObject.FindGameObjectWithTag("START").GetComponent<TileScript>();
+        endTile = GameObject.FindGameObjectWithTag("END").GetComponent<TileScript>();
     }
 	
 	// Update is called once per frame
@@ -96,5 +101,41 @@ public class TileManagerScript : MonoBehaviour
         tiles[x + deltax, y + deltay] = activeTile;
         StartCoroutine(tile.Move(CalculatePosition(tile.XIndex + deltax, tile.YIndex + deltay, activeTile.transform.position.y),
                             speed, deltax, deltay));
+    }
+
+    public void CheckIfEnd()
+    {
+        int listCount = 0;
+        path = new List<TileScript>();
+        path.Add(startTile);
+        while (listCount != path.Count)
+        {
+            listCount = path.Count;
+            TileScript tile = path[path.Count - 1];
+            CheckTile(tiles[tile.XIndex + tile.xExit1, tile.YIndex + tile.yExit1], tile);
+            CheckTile(tiles[tile.XIndex + tile.xExit2, tile.YIndex + tile.yExit2], tile);
+        }
+        if (path.Contains(endTile) && path.Contains(startTile))
+        {
+            Debug.Log("WIN");
+        }
+    }
+
+    public void CheckTile(GameObject _tile, TileScript _enteringTile)
+    {
+        if (_tile != null)
+        {
+            TileScript tileScr = _tile.GetComponent<TileScript>();
+            if (!path.Contains(tileScr) && tileScr.passable == true)
+            {
+                if ((tileScr.xExit1 == -(_enteringTile.xExit1) || tileScr.yExit1 == -(_enteringTile.yExit1)) ||
+                    (tileScr.xExit2 == -(_enteringTile.xExit2) || tileScr.yExit2 == -(_enteringTile.yExit2)) ||
+                    (tileScr.xExit1 == -(_enteringTile.xExit2) || tileScr.yExit1 == -(_enteringTile.yExit2)) ||
+                    (tileScr.xExit2 == -(_enteringTile.xExit1) || tileScr.yExit2 == -(_enteringTile.yExit1)))
+                {
+                    path.Add(tileScr);
+                }
+            }
+        }
     }
 }

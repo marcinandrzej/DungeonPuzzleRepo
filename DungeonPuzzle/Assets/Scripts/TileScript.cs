@@ -57,6 +57,7 @@ public class TileScript : MonoBehaviour
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, destination, speed);
             yield return new WaitForEndOfFrame();
         }
+        TileManagerScript.instance.CheckIfEnd();
         yield return new WaitForEndOfFrame();
     }
 }
