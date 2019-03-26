@@ -128,10 +128,10 @@ public class TileManagerScript : MonoBehaviour
             TileScript tileScr = _tile.GetComponent<TileScript>();
             if (!path.Contains(tileScr) && tileScr.passable == true)
             {
-                if ((tileScr.xExit1 == -(_enteringTile.xExit1) || tileScr.yExit1 == -(_enteringTile.yExit1)) ||
-                    (tileScr.xExit2 == -(_enteringTile.xExit2) || tileScr.yExit2 == -(_enteringTile.yExit2)) ||
-                    (tileScr.xExit1 == -(_enteringTile.xExit2) || tileScr.yExit1 == -(_enteringTile.yExit2)) ||
-                    (tileScr.xExit2 == -(_enteringTile.xExit1) || tileScr.yExit2 == -(_enteringTile.yExit1)))
+                if ((tileScr.xExit1 == -(_enteringTile.xExit1) && tileScr.yExit1 == -(_enteringTile.yExit1)) ||
+                    (tileScr.xExit2 == -(_enteringTile.xExit2) && tileScr.yExit2 == -(_enteringTile.yExit2)) ||
+                    (tileScr.xExit1 == -(_enteringTile.xExit2) && tileScr.yExit1 == -(_enteringTile.yExit2)) ||
+                    (tileScr.xExit2 == -(_enteringTile.xExit1) && tileScr.yExit2 == -(_enteringTile.yExit1)))
                 {
                     path.Add(tileScr);
                 }
