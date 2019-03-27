@@ -46,6 +46,7 @@ public class ControllScript : MonoBehaviour
                         TileManagerScript.instance.MoveTile(tile.XIndex, tile.YIndex, deltaxy[0], deltaxy[1], tile, SPEED);
                     }
                 }
+                activeTile = null;
             }
         }
         /*

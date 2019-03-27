@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 4618295192093776}
   - component: {fileID: 33656288843789884}
   - component: {fileID: 23580639756247100}
-  - component: {fileID: 114534699253375064}
   - component: {fileID: 114431226885278102}
   m_Layer: 0
   m_Name: EndTile
@@ -736,21 +735,3 @@ MonoBehaviour:
   yExit1: 1
   xExit2: 0
   yExit2: 0
---- !u!114 &114534699253375064
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1197022771478892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d08d4d36422a4844ad53c6bb7f82319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xIndex: 0
-  yIndex: 0
-  passable: 1
-  xExit1: 0
-  yExit1: 1
-  xExit2: 0
-  yExit2: -1

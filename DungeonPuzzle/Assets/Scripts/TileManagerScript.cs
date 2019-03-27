@@ -14,6 +14,7 @@ public class TileManagerScript : MonoBehaviour
     public static TileManagerScript instance;
     public GameObject[] tilePrefabs;
     public GameObject tilesParent;
+    public ControllScript controllScript;
 
     void Awake()
     {
@@ -55,8 +56,6 @@ public class TileManagerScript : MonoBehaviour
         map[3, 3] = 7;
 
         SetUpTiles(tilesParent.transform, map);
-        startTile = GameObject.FindGameObjectWithTag("START").GetComponent<TileScript>();
-        endTile = GameObject.FindGameObjectWithTag("END").GetComponent<TileScript>();
     }
 	
 	// Update is called once per frame
@@ -65,7 +64,7 @@ public class TileManagerScript : MonoBehaviour
 
     }
 
-    private void SetUpTiles(Transform parent, int[,] tileMap)
+    public void SetUpTiles(Transform parent, int[,] tileMap)
     {
         tiles = new GameObject[tileMap.GetLength(0), tileMap.GetLength(1)];
         for (int x = 0; x < tiles.GetLength(0); x++)
@@ -75,10 +74,13 @@ public class TileManagerScript : MonoBehaviour
                 if (tileMap[x, y] != 0)
                 {
                     tiles[x, y] = Instantiate(tilePrefabs[tileMap[x, y] - 1], tilesParent.transform, false);
-                    tiles[x, y].GetComponent<TileScript>().SetPosition(x, y, CalculatePosition(x, y, 0));
+                    tiles[x, y].GetComponent<TileScript>().SetPosition(x, y, CalculatePosition(x, y, tileMap[x, y] == 1 ? 2.5f : 0));
                 }
             }
         }
+        startTile = GameObject.FindGameObjectWithTag("START").GetComponent<TileScript>();
+        endTile = GameObject.FindGameObjectWithTag("END").GetComponent<TileScript>();
+        controllScript.enabled = true;
     }
 
     public Vector3 CalculatePosition(int x, int y, float hight)
@@ -117,7 +119,7 @@ public class TileManagerScript : MonoBehaviour
         }
         if (path.Contains(endTile) && path.Contains(startTile))
         {
-            Debug.Log("WIN");
+            controllScript.enabled = false;
         }
     }
 
