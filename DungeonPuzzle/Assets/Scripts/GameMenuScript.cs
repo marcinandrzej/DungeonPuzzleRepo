@@ -11,6 +11,8 @@ public class GameMenuScript : MonoBehaviour
 
     public GameObject winPanel;
     public Image[] coins;
+    public Text[] coinsText;
+    public Text movesText;
 
     void Awake()
     {
@@ -48,5 +50,18 @@ public class GameMenuScript : MonoBehaviour
                 coins[i].color = inactiveColor;
         }
         winPanel.SetActive(true);
+    }
+
+    public void UpdateCoinText(int[] values)
+    {
+        for (int i = 0; i < coinsText.Length; i++)
+        {
+            coinsText[i].text = values[i].ToString();
+        }
+    }
+
+    public void UpdateMovesText(int moves)
+    {
+        movesText.text = moves.ToString();
     }
 }

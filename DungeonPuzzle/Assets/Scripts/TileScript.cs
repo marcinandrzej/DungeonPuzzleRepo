@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviour
 {
-    public int xIndex;
-    public int yIndex;
+    private int xIndex;
+    private int yIndex;
 
     public bool passable;
 

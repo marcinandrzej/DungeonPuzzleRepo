@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TileManagerScript : MonoBehaviour
 {
+    private const float SPEED = 0.5f;
+    private const float HEIGHT = 2.5f;
     private const int X_OFFSET = 10;
     private const int Y_OFFSET = -10;
 
@@ -11,10 +13,13 @@ public class TileManagerScript : MonoBehaviour
     private TileScript endTile;
     private List<TileScript> path;
     private GameObject[,] tiles;
+    private int moves;
+
     public static TileManagerScript instance;
     public GameObject[] tilePrefabs;
     public GameObject tilesParent;
     public ControllScript controllScript;
+    public CharaterScript character;
 
     void Awake()
     {
@@ -55,7 +60,10 @@ public class TileManagerScript : MonoBehaviour
         map[3, 2] = 6;
         map[3, 3] = 7;
 
+        SetUpGui();
         SetUpTiles(tilesParent.transform, map);
+        SetUpCharacter();
+        controllScript.enabled = true;
     }
 	
 	// Update is called once per frame
@@ -74,13 +82,23 @@ public class TileManagerScript : MonoBehaviour
                 if (tileMap[x, y] != 0)
                 {
                     tiles[x, y] = Instantiate(tilePrefabs[tileMap[x, y] - 1], tilesParent.transform, false);
-                    tiles[x, y].GetComponent<TileScript>().SetPosition(x, y, CalculatePosition(x, y, tileMap[x, y] == 1 ? 2.5f : 0));
+                    tiles[x, y].GetComponent<TileScript>().SetPosition(x, y, CalculatePosition(x, y, tileMap[x, y] == 1 ? HEIGHT : 0));
                 }
             }
         }
         startTile = GameObject.FindGameObjectWithTag("START").GetComponent<TileScript>();
         endTile = GameObject.FindGameObjectWithTag("END").GetComponent<TileScript>();
-        controllScript.enabled = true;
+    }
+
+    public void SetUpCharacter()
+    {
+        character.transform.localPosition = new Vector3(startTile.transform.localPosition.x, 7, startTile.transform.localPosition.z);
+    }
+
+    public void SetUpGui()
+    {
+        moves = 0;
+        GameMenuScript.instance.UpdateMovesText(moves);
     }
 
     public Vector3 CalculatePosition(int x, int y, float hight)
@@ -96,13 +114,15 @@ public class TileManagerScript : MonoBehaviour
         return false;
     }
 
-    public void MoveTile(int x, int y, int deltax, int deltay, TileScript tile, float speed)
+    public void MoveTile(int x, int y, int deltax, int deltay, TileScript tile)
     {
+        moves++;
+        GameMenuScript.instance.UpdateMovesText(moves);
         GameObject activeTile = tiles[x, y];
         tiles[x, y] = null;
         tiles[x + deltax, y + deltay] = activeTile;
         StartCoroutine(tile.Move(CalculatePosition(tile.XIndex + deltax, tile.YIndex + deltay, activeTile.transform.position.y),
-                            speed, deltax, deltay));
+                            SPEED, deltax, deltay));
     }
 
     public void CheckIfEnd()
@@ -114,28 +134,38 @@ public class TileManagerScript : MonoBehaviour
         {
             listCount = path.Count;
             TileScript tile = path[path.Count - 1];
-            CheckTile(tiles[tile.XIndex + tile.xExit1, tile.YIndex + tile.yExit1], tile);
-            CheckTile(tiles[tile.XIndex + tile.xExit2, tile.YIndex + tile.yExit2], tile);
+            CheckTile(tiles[tile.XIndex + tile.xExit1, tile.YIndex + tile.yExit1], tile, 0);
+            CheckTile(tiles[tile.XIndex + tile.xExit2, tile.YIndex + tile.yExit2], tile, 1);
         }
         if (path.Contains(endTile) && path.Contains(startTile))
         {
             controllScript.enabled = false;
+            StartCoroutine(character.Move(path, SPEED));
         }
     }
 
-    public void CheckTile(GameObject _tile, TileScript _enteringTile)
+    public void CheckTile(GameObject _tile, TileScript _enteringTile, int entryIndex)
     {
         if (_tile != null)
         {
             TileScript tileScr = _tile.GetComponent<TileScript>();
             if (!path.Contains(tileScr) && tileScr.passable == true)
             {
-                if ((tileScr.xExit1 == -(_enteringTile.xExit1) && tileScr.yExit1 == -(_enteringTile.yExit1)) ||
-                    (tileScr.xExit2 == -(_enteringTile.xExit2) && tileScr.yExit2 == -(_enteringTile.yExit2)) ||
-                    (tileScr.xExit1 == -(_enteringTile.xExit2) && tileScr.yExit1 == -(_enteringTile.yExit2)) ||
-                    (tileScr.xExit2 == -(_enteringTile.xExit1) && tileScr.yExit2 == -(_enteringTile.yExit1)))
+                if (entryIndex == 0)
                 {
-                    path.Add(tileScr);
+                    if ((tileScr.xExit1 == -(_enteringTile.xExit1) && tileScr.yExit1 == -(_enteringTile.yExit1)) || 
+                        (tileScr.xExit2 == -(_enteringTile.xExit1) && tileScr.yExit2 == -(_enteringTile.yExit1)))
+                    {
+                        path.Add(tileScr);
+                    }
+                }
+                else
+                {
+                    if ((tileScr.xExit1 == -(_enteringTile.xExit2) && tileScr.yExit1 == -(_enteringTile.yExit2)) || 
+                        (tileScr.xExit2 == -(_enteringTile.xExit2) && tileScr.yExit2 == -(_enteringTile.yExit2)))
+                    {
+                        path.Add(tileScr);
+                    }
                 }
             }
         }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ControllScript : MonoBehaviour
 {
-    private const float SPEED = 0.5f;
-
     private GameObject activeTile;
     private Vector2 mouseDownCoord;
     private Vector2 mouseUpCoord;
@@ -37,13 +35,13 @@ public class ControllScript : MonoBehaviour
             if (activeTile != null)
             {
                 mouseUpCoord = Input.mousePosition;
-                if (activeTile != null && Vector2.Distance(mouseDownCoord, mouseUpCoord) >= dragMinDistance)
+                if (Vector2.Distance(mouseDownCoord, mouseUpCoord) >= dragMinDistance)
                 {
                     TileScript tile = activeTile.GetComponent<TileScript>();
                     int[] deltaxy = CalculateDirection(mouseDownCoord, mouseUpCoord);
                     if (TileManagerScript.instance.CanBeMoved(tile.XIndex + deltaxy[0], tile.YIndex + deltaxy[1]))
                     {
-                        TileManagerScript.instance.MoveTile(tile.XIndex, tile.YIndex, deltaxy[0], deltaxy[1], tile, SPEED);
+                        TileManagerScript.instance.MoveTile(tile.XIndex, tile.YIndex, deltaxy[0], deltaxy[1], tile);
                     }
                 }
                 activeTile = null;
