@@ -13,6 +13,9 @@ public class GameMenuScript : MonoBehaviour
     public Image[] coins;
     public Text[] coinsText;
     public Text movesText;
+    public Text levelText;
+
+    public Button nextLevelButton;
 
     void Awake()
     {
@@ -49,19 +52,31 @@ public class GameMenuScript : MonoBehaviour
             else
                 coins[i].color = inactiveColor;
         }
+        if (coinsCount <= 0)
+        {
+            nextLevelButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            nextLevelButton.gameObject.SetActive(true);
+        }
         winPanel.SetActive(true);
     }
 
-    public void UpdateCoinText(int[] values)
+    public void UpdateCoinText(int threeCoins, int twoCoins, int oneCoin)
     {
-        for (int i = 0; i < coinsText.Length; i++)
-        {
-            coinsText[i].text = values[i].ToString();
-        }
+        coinsText[0].text = threeCoins.ToString();
+        coinsText[1].text = twoCoins.ToString();
+        coinsText[2].text = oneCoin.ToString();
     }
 
     public void UpdateMovesText(int moves)
     {
         movesText.text = moves.ToString();
+    }
+
+    public void UpdateLevelText(int level)
+    {
+        levelText.text = "LEVEL " + level.ToString();
     }
 }

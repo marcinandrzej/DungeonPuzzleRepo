@@ -33,6 +33,7 @@ public class CharaterScript : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+        GameControllerScript.instance.EndLevel();
         yield return new WaitForEndOfFrame();
     }
 }

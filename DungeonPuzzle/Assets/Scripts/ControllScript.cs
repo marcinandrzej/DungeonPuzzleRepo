@@ -39,9 +39,9 @@ public class ControllScript : MonoBehaviour
                 {
                     TileScript tile = activeTile.GetComponent<TileScript>();
                     int[] deltaxy = CalculateDirection(mouseDownCoord, mouseUpCoord);
-                    if (TileManagerScript.instance.CanBeMoved(tile.XIndex + deltaxy[0], tile.YIndex + deltaxy[1]))
+                    if (GameControllerScript.instance.CanBeMoved(tile.XIndex + deltaxy[0], tile.YIndex + deltaxy[1]))
                     {
-                        TileManagerScript.instance.MoveTile(tile.XIndex, tile.YIndex, deltaxy[0], deltaxy[1], tile);
+                        GameControllerScript.instance.MoveTile(tile.XIndex, tile.YIndex, deltaxy[0], deltaxy[1], tile);
                     }
                 }
                 activeTile = null;
