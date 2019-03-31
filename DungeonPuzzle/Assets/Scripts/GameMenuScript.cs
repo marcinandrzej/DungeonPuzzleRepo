@@ -7,7 +7,6 @@ public class GameMenuScript : MonoBehaviour
 {
     private Color32 inactiveColor;
     private Color32 activeColor;
-    public static GameMenuScript instance;
 
     public GameObject winPanel;
     public Image[] coins;
@@ -19,16 +18,6 @@ public class GameMenuScript : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(instance.gameObject);
-            instance = this;
-        }
-
         activeColor = new Color32(255, 255, 255, 255);
         inactiveColor = new Color32(100, 100, 100, 255);
     }
@@ -61,6 +50,11 @@ public class GameMenuScript : MonoBehaviour
             nextLevelButton.gameObject.SetActive(true);
         }
         winPanel.SetActive(true);
+    }
+
+    public void HideWinMenu()
+    {
+        winPanel.SetActive(false);
     }
 
     public void UpdateCoinText(int threeCoins, int twoCoins, int oneCoin)

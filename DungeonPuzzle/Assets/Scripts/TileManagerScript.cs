@@ -13,8 +13,6 @@ public class TileManagerScript : MonoBehaviour
     private GameObject[,] tiles;
     private List<TileScript> path;
 
-    public GameObject[] tilePrefabs;
-
     public TileScript StartTile
     {
         get
@@ -23,7 +21,12 @@ public class TileManagerScript : MonoBehaviour
         }
     }
 
-    public void SetUpTiles(Transform parent, MapClass map)
+    public GameObject GetTile(int x, int y)
+    {
+        return tiles[x, y];
+    }
+
+    public void SetUpTiles(Transform parent, MapClass map, GameObject[] tilePrefabs)
     {
         int[,] tileMap = map.tileMap;
         tiles = new GameObject[tileMap.GetLength(0), tileMap.GetLength(1)];
@@ -35,11 +38,17 @@ public class TileManagerScript : MonoBehaviour
                 {
                     tiles[x, y] = Instantiate(tilePrefabs[tileMap[x, y] - 1], parent.transform, false);
                     tiles[x, y].GetComponent<TileScript>().SetPosition(x, y, CalculatePosition(x, y, tileMap[x, y] == 1 ? HEIGHT : 0));
+                    if (tiles[x, y].tag == "START")
+                    {
+                        startTile = tiles[x, y].GetComponent<TileScript>();
+                    }
+                    else if (tiles[x, y].tag == "END")
+                    {
+                        endTile = tiles[x, y].GetComponent<TileScript>();
+                    }
                 }
             }
         }
-        startTile = GameObject.FindGameObjectWithTag("START").GetComponent<TileScript>();
-        endTile = GameObject.FindGameObjectWithTag("END").GetComponent<TileScript>();
     }
    
     public bool CanBeMoved(int x, int y)
@@ -56,16 +65,11 @@ public class TileManagerScript : MonoBehaviour
         tiles[x + deltax, y + deltay] = activeTile;
     }
 
-    public GameObject GetTile(int x, int y)
-    {
-        return tiles[x, y];
-    }
-
     public List<TileScript> CheckIfEnd()
     {
         int listCount = 0;
         path = new List<TileScript>();
-        path.Add(StartTile);
+        path.Add(startTile);
         while (listCount != path.Count)
         {
             listCount = path.Count;
@@ -73,7 +77,7 @@ public class TileManagerScript : MonoBehaviour
             CheckTile(tiles[tile.XIndex + tile.xExit1, tile.YIndex + tile.yExit1], tile, 0);
             CheckTile(tiles[tile.XIndex + tile.xExit2, tile.YIndex + tile.yExit2], tile, 1);
         }
-        if (path.Contains(endTile) && path.Contains(StartTile))
+        if (path.Contains(endTile) && path.Contains(startTile))
             return path;
         return null;
     }
@@ -109,5 +113,28 @@ public class TileManagerScript : MonoBehaviour
     {
         Vector3 calculatedPos = new Vector3((x - 1) * X_OFFSET, hight, (y - 1) * Y_OFFSET);
         return calculatedPos;
+    }
+
+    public void DestroyAllTiles()
+    {
+        int dX = tiles.GetLength(0);
+        int dY = tiles.GetLength(1);
+        for (int x = 0; x < dX; x++)
+        {
+            for (int y = 0; y < dY; y++)
+            {
+                if (tiles[x, y] != null)
+                {
+                    Destroy(tiles[x, y]);
+                }
+            }
+        }
+    }
+
+    public bool TilesTableInUse()
+    {
+        if (tiles != null)
+            return true;
+        return false;
     }
 }

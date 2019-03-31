@@ -94,8 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d08d4d36422a4844ad53c6bb7f82319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xIndex: 0
-  yIndex: 0
   passable: 0
   xExit1: 0
   yExit1: 0

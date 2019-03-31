@@ -7,17 +7,21 @@ public class GameControllerScript : MonoBehaviour
     public static GameControllerScript instance;
     private const float SPEED = 0.5f;
 
-    public TileManagerScript tileManager;
+    private TileManagerScript tileManagerScript;
     private ControllScript controllScript;
-    private MapManagerScript mapManager;
+    private MapManagerScript mapManagerScript;
+    public GameMenuScript gameMenuScript;
 
     private MapClass currentMap;
-    public CharaterScript character;
+    private CharaterScript character;
+    private Coroutine characterMovementCoroutine;
 
     private int currentLevel;
     private int moves;
 
     public GameObject tilesParent;
+    public GameObject[] tilePrefabs;
+    public GameObject characterPrefab;
 
     void Awake()
     {
@@ -31,15 +35,16 @@ public class GameControllerScript : MonoBehaviour
             instance = this;
         }
     }
+
     // Use this for initialization
     void Start ()
     {
-        //tileManager = gameObject.AddComponent<TileManagerScript>();
-        mapManager = gameObject.AddComponent<MapManagerScript>();
+        tileManagerScript = gameObject.AddComponent<TileManagerScript>();
+        mapManagerScript = gameObject.AddComponent<MapManagerScript>();
         controllScript = gameObject.AddComponent<ControllScript>();
+        controllScript.enabled = false;
 
-        mapManager.LoadMaps("/mapki.dat");
-        SetUpGame(tilesParent.transform, 0);
+        mapManagerScript.LoadMaps("/mapki.dat");
     }
 	
 	// Update is called once per frame
@@ -49,37 +54,42 @@ public class GameControllerScript : MonoBehaviour
 
     public bool CanBeMoved(int x, int y)
     {
-        return tileManager.CanBeMoved(x, y);
+        return tileManagerScript.CanBeMoved(x, y);
     }
 
     public void MoveTile(int x, int y, int deltax, int deltay, TileScript tile)
     {
         moves++;
-        GameMenuScript.instance.UpdateMovesText(moves);
-        GameObject activeTile = tileManager.GetTile(x, y);
-        tileManager.UpdateIndexes(x, y, deltax, deltay);
-        StartCoroutine(tile.Move(tileManager.CalculatePosition(tile.XIndex + deltax, tile.YIndex + deltay, activeTile.transform.position.y),
+        gameMenuScript.UpdateMovesText(moves);
+        GameObject activeTile = tileManagerScript.GetTile(x, y);
+        tileManagerScript.UpdateIndexes(x, y, deltax, deltay);
+        StartCoroutine(tile.Move(tileManagerScript.CalculatePosition(tile.XIndex + deltax, tile.YIndex + deltay, activeTile.transform.position.y),
                             SPEED, deltax, deltay));
     }
 
     public void CheckIfEnd()
     {
-        List<TileScript> characterPath = tileManager.CheckIfEnd();
+        List<TileScript> characterPath = tileManagerScript.CheckIfEnd();
         if (characterPath != null)
         {
             controllScript.enabled = false;
-            StartCoroutine(character.Move(characterPath, SPEED));
+            characterMovementCoroutine = StartCoroutine(character.Move(characterPath, SPEED));
         }
     }
 
-    public void SetUpGame(Transform parent, int level)
+    public void SetUpGame(int level)
     {
-        MapClass map = mapManager.GetMap(level);
+        gameMenuScript.HideWinMenu();
+        MapClass map = mapManagerScript.GetMap(level);
         if (map != null)
         {
             currentMap = map;
-            tileManager.SetUpTiles(parent, map);
-            SetUpCharacter(tileManager.StartTile);
+            if (tileManagerScript.TilesTableInUse())
+            {
+                tileManagerScript.DestroyAllTiles();
+            }
+            tileManagerScript.SetUpTiles(tilesParent.transform, map, tilePrefabs);
+            SetUpCharacter(tileManagerScript.StartTile);
             SetUpGui(level);
             controllScript.enabled = true;
         }
@@ -87,6 +97,12 @@ public class GameControllerScript : MonoBehaviour
 
     private void SetUpCharacter(TileScript startTile)
     {
+        if (character == null)
+        {
+            character = Instantiate(characterPrefab, tilesParent.transform, false).AddComponent<CharaterScript>();
+        }
+        if (characterMovementCoroutine != null)
+            StopCoroutine(characterMovementCoroutine);
         character.transform.localPosition = new Vector3(startTile.transform.localPosition.x, 7, startTile.transform.localPosition.z);
     }
 
@@ -94,9 +110,9 @@ public class GameControllerScript : MonoBehaviour
     {
         currentLevel = level;
         moves = 0;
-        GameMenuScript.instance.UpdateMovesText(moves);
-        GameMenuScript.instance.UpdateCoinText(currentMap.moves, currentMap.moves + 2, currentMap.moves + 5);
-        GameMenuScript.instance.UpdateLevelText(level + 1);
+        gameMenuScript.UpdateMovesText(moves);
+        gameMenuScript.UpdateCoinText(currentMap.moves, currentMap.moves + 2, currentMap.moves + 5);
+        gameMenuScript.UpdateLevelText(level + 1);
     }
 
     public int CalculateCoins()
@@ -112,6 +128,6 @@ public class GameControllerScript : MonoBehaviour
 
     public void EndLevel()
     {
-        GameMenuScript.instance.ShowWinMenu(CalculateCoins());
+        gameMenuScript.ShowWinMenu(CalculateCoins());
     }
 }
