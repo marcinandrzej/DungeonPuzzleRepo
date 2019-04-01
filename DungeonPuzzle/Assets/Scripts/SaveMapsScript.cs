@@ -159,7 +159,7 @@ public class SaveMapsScript : MonoBehaviour
         map[3, 1] = 6;
         map[2, 3] = 5;
         map[1, 2] = 7;
-        map[2, 3] = 8;
+        map[3, 3] = 8;
         map[2, 1] = 4;
         //Save map
         mapp = new MapClass(4, map);

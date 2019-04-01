@@ -5,22 +5,16 @@ using UnityEngine.UI;
 
 public class GameMenuScript : MonoBehaviour
 {
-    private Color32 inactiveColor;
-    private Color32 activeColor;
-
     public GameObject winPanel;
+    public GameObject infoPanel;
+    public GameObject controlPanel;
+    public GameObject nextButton;
     public Image[] coins;
     public Text[] coinsText;
     public Text movesText;
     public Text levelText;
 
     public Button nextLevelButton;
-
-    void Awake()
-    {
-        activeColor = new Color32(255, 255, 255, 255);
-        inactiveColor = new Color32(100, 100, 100, 255);
-    }
 
 	// Use this for initialization
 	void Start () {
@@ -32,14 +26,14 @@ public class GameMenuScript : MonoBehaviour
 		
 	}
 
-    public void ShowWinMenu(int coinsCount)
+    public void ShowWinMenu(int coinsCount, bool showNextButton)
     {
         for (int i = 0; i < coins.Length; i++)
         {
             if (i < coinsCount)
-                coins[i].color = activeColor;
+                coins[i].gameObject.SetActive(true);
             else
-                coins[i].color = inactiveColor;
+                coins[i].gameObject.SetActive(false);
         }
         if (coinsCount <= 0)
         {
@@ -49,12 +43,15 @@ public class GameMenuScript : MonoBehaviour
         {
             nextLevelButton.gameObject.SetActive(true);
         }
-        winPanel.SetActive(true);
+        nextButton.SetActive(showNextButton);
+        HideWinMenu(true);
     }
 
-    public void HideWinMenu()
+    public void HideWinMenu(bool show)
     {
-        winPanel.SetActive(false);
+        infoPanel.SetActive(!show);
+        controlPanel.SetActive(!show);
+        winPanel.SetActive(show);
     }
 
     public void UpdateCoinText(int threeCoins, int twoCoins, int oneCoin)

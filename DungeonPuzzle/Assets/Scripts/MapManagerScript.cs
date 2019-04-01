@@ -35,4 +35,11 @@ public class MapManagerScript : MonoBehaviour
             return maps[level];
         return null;
     }
+
+    public bool IsNextLevel(int currentlevel)
+    {
+        if (currentlevel < maps.Count - 1)
+            return true;
+        return false;
+    }
 }

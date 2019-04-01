@@ -79,7 +79,7 @@ public class GameControllerScript : MonoBehaviour
 
     public void SetUpGame(int level)
     {
-        gameMenuScript.HideWinMenu();
+        gameMenuScript.HideWinMenu(false);
         MapClass map = mapManagerScript.GetMap(level);
         if (map != null)
         {
@@ -128,6 +128,16 @@ public class GameControllerScript : MonoBehaviour
 
     public void EndLevel()
     {
-        gameMenuScript.ShowWinMenu(CalculateCoins());
+        gameMenuScript.ShowWinMenu(CalculateCoins(), mapManagerScript.IsNextLevel(currentLevel));
+    }
+
+    public void RestartLevel()
+    {
+        SetUpGame(currentLevel);
+    }
+
+    public void NextLevel()
+    {
+        SetUpGame(currentLevel + 1);
     }
 }
