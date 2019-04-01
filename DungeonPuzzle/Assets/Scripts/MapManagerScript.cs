@@ -10,7 +10,7 @@ public class MapManagerScript : MonoBehaviour
 
     public bool LoadMaps(string fileName)
     {
-        string filePath = (Application.persistentDataPath + fileName);
+        string filePath = (Application.streamingAssetsPath + fileName);
         if (File.Exists(filePath))
         {
             maps = new List<MapClass>();
