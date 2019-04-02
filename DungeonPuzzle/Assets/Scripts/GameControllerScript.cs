@@ -44,11 +44,16 @@ public class GameControllerScript : MonoBehaviour
         controllScript = gameObject.AddComponent<ControllScript>();
         controllScript.enabled = false;
 
+        buttonAction action= SetUpGame;
+        gameMenuScript.SetUpLevelButtons(action);
+        gameMenuScript.UpdateLevelButtons("0");
+
         mapManagerScript.LoadMaps("/mapki.dat");
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		
 	}
 
@@ -91,6 +96,7 @@ public class GameControllerScript : MonoBehaviour
             tileManagerScript.SetUpTiles(tilesParent.transform, map, tilePrefabs);
             SetUpCharacter(tileManagerScript.StartTile);
             SetUpGui(level);
+            gameMenuScript.HideLevelMenu(false);
             controllScript.enabled = true;
         }
     }
@@ -128,7 +134,7 @@ public class GameControllerScript : MonoBehaviour
 
     public void EndLevel()
     {
-        gameMenuScript.ShowWinMenu(CalculateCoins(), mapManagerScript.IsNextLevel(currentLevel));
+        gameMenuScript.ShowWinMenu(CalculateCoins(), (mapManagerScript.IsNextLevel(currentLevel) && true));
     }
 
     public void RestartLevel()
@@ -139,5 +145,12 @@ public class GameControllerScript : MonoBehaviour
     public void NextLevel()
     {
         SetUpGame(currentLevel + 1);
+    }
+
+    public void LevelMenuShow(bool show)
+    {
+        if (characterMovementCoroutine != null)
+            StopCoroutine(characterMovementCoroutine);
+        gameMenuScript.HideLevelMenu(show);
     }
 }
