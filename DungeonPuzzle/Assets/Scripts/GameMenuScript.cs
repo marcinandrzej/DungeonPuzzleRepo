@@ -101,9 +101,8 @@ public class GameMenuScript : MonoBehaviour
         }
     }
 
-    public void UpdateLevelButtons(string key)
+    public void UpdateLevelButtons(char[] key)
     {
-        char[] keyInChar = key.ToCharArray();
         for (int i = 0; i < levelButtons.Length; i++)
         {
             if (key.Length > i)
@@ -111,7 +110,7 @@ public class GameMenuScript : MonoBehaviour
                 levelButtons[i].ChangeImage(activeLevel);
                 levelButtons[i].ActiveButton(true);
                 levelButtons[i].ActiveText(true);
-                levelButtons[i].ShowStars((int)char.GetNumericValue(keyInChar[i]));
+                levelButtons[i].ShowStars((int)char.GetNumericValue(key[i]));
             }
             else
             {

@@ -7,6 +7,7 @@ public class GameControllerScript : MonoBehaviour
     public static GameControllerScript instance;
     private const float SPEED = 0.5f;
 
+    private KeyScript keyScript;
     private TileManagerScript tileManagerScript;
     private ControllScript controllScript;
     private MapManagerScript mapManagerScript;
@@ -39,16 +40,19 @@ public class GameControllerScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        keyScript = gameObject.AddComponent<KeyScript>();
         tileManagerScript = gameObject.AddComponent<TileManagerScript>();
         mapManagerScript = gameObject.AddComponent<MapManagerScript>();
         controllScript = gameObject.AddComponent<ControllScript>();
+
         controllScript.enabled = false;
-
-        buttonAction action= SetUpGame;
-        gameMenuScript.SetUpLevelButtons(action);
-        gameMenuScript.UpdateLevelButtons("0");
-
+        keyScript.LoadKey();
         mapManagerScript.LoadMaps("/mapki.dat");
+
+        buttonAction action = SetUpGame;
+        gameMenuScript.SetUpLevelButtons(action);
+        gameMenuScript.UpdateLevelButtons(keyScript.GetKeyValue());
+
     }
 	
 	// Update is called once per frame
@@ -134,7 +138,24 @@ public class GameControllerScript : MonoBehaviour
 
     public void EndLevel()
     {
-        gameMenuScript.ShowWinMenu(CalculateCoins(), (mapManagerScript.IsNextLevel(currentLevel) && true));
+        bool save = false;
+        int coins = CalculateCoins();
+        bool isNextLevel = mapManagerScript.IsNextLevel(currentLevel);
+        if (coins > 0)
+        {
+            if (keyScript.IsUpdateNeeded(currentLevel, coins))
+            {
+                keyScript.UpdateKey(currentLevel, coins);
+                save = true;
+            }
+            if (isNextLevel && keyScript.IsUpdateNeeded(currentLevel + 1, 0))
+            {
+                keyScript.UpdateKey(currentLevel + 1, 0);
+                save = true;
+            }
+            keyScript.SaveKey();
+        }
+        gameMenuScript.ShowWinMenu(coins, (isNextLevel && keyScript.GetKeyNumericalValue(currentLevel) > 0));
     }
 
     public void RestartLevel()
@@ -151,6 +172,7 @@ public class GameControllerScript : MonoBehaviour
     {
         if (characterMovementCoroutine != null)
             StopCoroutine(characterMovementCoroutine);
+        gameMenuScript.UpdateLevelButtons(keyScript.GetKeyValue());
         gameMenuScript.HideLevelMenu(show);
     }
 }
