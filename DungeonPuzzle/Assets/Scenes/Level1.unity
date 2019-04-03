@@ -152,26 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114413173012273994, guid: 4b0dbce8f1ba10b40ab7cf2ae5c56625,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1802437045}
-    - target: {fileID: 114413173012273994, guid: 4b0dbce8f1ba10b40ab7cf2ae5c56625,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LevelMenuShow
-      objectReference: {fileID: 0}
-    - target: {fileID: 114722475438283592, guid: 4b0dbce8f1ba10b40ab7cf2ae5c56625,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1802437045}
-    - target: {fileID: 114722475438283592, guid: 4b0dbce8f1ba10b40ab7cf2ae5c56625,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LevelMenuShow
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4b0dbce8f1ba10b40ab7cf2ae5c56625, type: 2}
   m_IsPrefabParent: 0
@@ -333,12 +313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a00b168b7716c6469ad0bb71d36fc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1802437045 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114078108783100192, guid: 4b0dbce8f1ba10b40ab7cf2ae5c56625,
-    type: 2}
-  m_PrefabInternal: {fileID: 694710184}
-  m_Script: {fileID: 11500000, guid: 16edf7552c34d254584c9b1b3bb475ec, type: 3}
 --- !u!1 &2033771631
 GameObject:
   m_ObjectHideFlags: 0

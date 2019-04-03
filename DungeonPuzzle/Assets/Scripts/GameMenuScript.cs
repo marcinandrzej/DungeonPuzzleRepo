@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameMenuScript : MonoBehaviour
 {
@@ -120,5 +121,10 @@ public class GameMenuScript : MonoBehaviour
                 levelButtons[i].ShowStars(0);
             }
         }
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }
