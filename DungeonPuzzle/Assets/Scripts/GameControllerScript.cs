@@ -88,6 +88,7 @@ public class GameControllerScript : MonoBehaviour
 
     public void SetUpGame(int level)
     {
+        AudioScript.instance.StopAllSoundes();
         gameMenuScript.HideWinMenu(false);
         MapClass map = mapManagerScript.GetMap(level);
         if (map != null)
@@ -113,7 +114,7 @@ public class GameControllerScript : MonoBehaviour
         }
         if (characterMovementCoroutine != null)
             StopCoroutine(characterMovementCoroutine);
-        character.transform.localPosition = new Vector3(startTile.transform.localPosition.x, 7, startTile.transform.localPosition.z);
+        character.transform.localPosition = new Vector3(startTile.transform.localPosition.x, 5, startTile.transform.localPosition.z);
     }
 
     private void SetUpGui(int level)
@@ -153,8 +154,10 @@ public class GameControllerScript : MonoBehaviour
                 keyScript.UpdateKey(currentLevel + 1, 0);
                 save = true;
             }
-            keyScript.SaveKey();
+            if(save)
+                keyScript.SaveKey();
         }
+        AudioScript.instance.PlayFanfares();
         gameMenuScript.ShowWinMenu(coins, (isNextLevel && keyScript.GetKeyNumericalValue(currentLevel) > 0));
     }
 
@@ -170,6 +173,7 @@ public class GameControllerScript : MonoBehaviour
 
     public void LevelMenuShow(bool show)
     {
+        AudioScript.instance.StopAllSoundes();
         if (characterMovementCoroutine != null)
             StopCoroutine(characterMovementCoroutine);
         gameMenuScript.UpdateLevelButtons(keyScript.GetKeyValue());
