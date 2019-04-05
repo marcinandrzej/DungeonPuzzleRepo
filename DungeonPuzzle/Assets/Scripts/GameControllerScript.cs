@@ -91,7 +91,7 @@ public class GameControllerScript : MonoBehaviour
         if (characterPath != null)
         {
             controllScript.enabled = false;
-            characterMovementCoroutine = StartCoroutine(character.Move(characterPath, SPEED));
+            characterMovementCoroutine = StartCoroutine(character.Move(characterPath, SPEED/2));
         }
     }
 
@@ -120,10 +120,12 @@ public class GameControllerScript : MonoBehaviour
         if (character == null)
         {
             character = Instantiate(characterPrefab, tilesParent.transform, false).AddComponent<CharaterScript>();
+            character.SetAnimator();
         }
         if (characterMovementCoroutine != null)
             StopCoroutine(characterMovementCoroutine);
         character.transform.localPosition = new Vector3(startTile.transform.localPosition.x, 5, startTile.transform.localPosition.z);
+        character.StopMove();
     }
 
     private void SetUpGui(int level)
