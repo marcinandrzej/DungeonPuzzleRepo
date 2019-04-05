@@ -80,37 +80,37 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Biel
-    second: {fileID: 2100004, guid: 057b660279f7b5045a5bb5b53f024883, type: 3}
+    second: {instanceID: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Brazowy
-    second: {fileID: 2100008, guid: 057b660279f7b5045a5bb5b53f024883, type: 3}
+    second: {instanceID: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Niebieski
-    second: {fileID: 2100010, guid: 057b660279f7b5045a5bb5b53f024883, type: 3}
+    second: {instanceID: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Pomaranczowy
-    second: {fileID: 2100006, guid: 057b660279f7b5045a5bb5b53f024883, type: 3}
+    second: {instanceID: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Twarz
-    second: {fileID: 2100002, guid: 057b660279f7b5045a5bb5b53f024883, type: 3}
+    second: {instanceID: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Zolty
-    second: {fileID: 2100000, guid: 057b660279f7b5045a5bb5b53f024883, type: 3}
+    second: {instanceID: 0}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

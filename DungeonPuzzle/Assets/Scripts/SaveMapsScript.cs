@@ -9,9 +9,8 @@ public class SaveMapsScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        List<MapClass> mpsList = PrepareData();
-        Save("/mapki.dat", mpsList);
-        Debug.Log("done");
+
+        //Debug.Log("done");
     }
 	
 	// Update is called once per frame
@@ -19,8 +18,9 @@ public class SaveMapsScript : MonoBehaviour
 		
 	}
 
-    public void Save(string fileName, List<MapClass> maps)
+    public void Save(string fileName)
     {
+        List<MapClass> maps = PrepareData();
         BinaryFormatter bFormater = new BinaryFormatter();
         FileStream file = File.Create(Application.streamingAssetsPath + fileName);
         for (int i = 0; i < maps.Count; i++)
@@ -30,7 +30,7 @@ public class SaveMapsScript : MonoBehaviour
         file.Close();
     }
 
-    private List<MapClass> PrepareData()
+    public List<MapClass> PrepareData()
     {
         /*
          * 0 - empty

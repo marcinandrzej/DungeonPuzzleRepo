@@ -16,17 +16,24 @@ public class CharaterScript : MonoBehaviour
 
     public IEnumerator Move (List<TileScript> path, float speed)
     {
+
+        Quaternion rot;
         float height = transform.localPosition.y;
         Vector3[] waypoints = new Vector3[path.Count];
-        for (int i = 0; i < waypoints.Length; i++)
-        {
-            waypoints[i] = path[i].gameObject.transform.localPosition;
-            waypoints[i].y = height;
-        }
 
         for (int j = 0; j < waypoints.Length; j++)
         {
+            waypoints[j] = path[j].gameObject.transform.localPosition;
+            waypoints[j].y = height;
             Vector3 destination = waypoints[j];
+            rot = Quaternion.LookRotation((waypoints[j] - transform.localPosition), transform.up);
+
+            while (transform.localRotation != rot)
+            {
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, rot, 3.0f);
+                yield return new WaitForEndOfFrame();
+            }
+
             while (!transform.localPosition.Equals(destination))
             {
                 transform.localPosition = Vector3.MoveTowards(transform.localPosition, destination, speed);

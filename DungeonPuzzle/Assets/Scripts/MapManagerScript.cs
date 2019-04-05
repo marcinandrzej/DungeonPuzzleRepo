@@ -8,6 +8,12 @@ public class MapManagerScript : MonoBehaviour
 {
     private List<MapClass> maps;
 
+
+    public void LoadMaps(List<MapClass> _maps)
+    {
+        maps = _maps;
+    }
+
     public bool LoadMaps(string fileName)
     {
         string filePath = (Application.streamingAssetsPath + fileName);
@@ -27,6 +33,14 @@ public class MapManagerScript : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public bool IsDataFile(string fileName)
+    {
+        string filePath = (Application.streamingAssetsPath + fileName);
+        if (File.Exists(filePath))
+            return true;
+        return false;
     }
 
     public MapClass GetMap(int level)

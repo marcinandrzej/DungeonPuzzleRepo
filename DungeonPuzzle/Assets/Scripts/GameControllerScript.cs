@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,7 +48,15 @@ public class GameControllerScript : MonoBehaviour
 
         controllScript.enabled = false;
         keyScript.LoadKey();
-        mapManagerScript.LoadMaps("/mapki.dat");
+        if (!mapManagerScript.IsDataFile("/mapki.dat"))
+        {
+            SaveMapsScript s = gameObject.AddComponent<SaveMapsScript>();
+            mapManagerScript.LoadMaps(s.PrepareData());
+        }
+        else
+        {
+            mapManagerScript.LoadMaps("/mapki.dat");
+        }
 
         buttonAction action = SetUpGame;
         gameMenuScript.SetUpLevelButtons(action);
